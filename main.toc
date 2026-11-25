@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Introduction to radiative transfer}{2}{0}{1}
+\beamer@sectionintoc {2}{Numerical scheme}{6}{0}{2}
+\beamer@sectionintoc {3}{Raytracing}{10}{0}{3}
+\beamer@sectionintoc {4}{Implementation}{17}{0}{4}

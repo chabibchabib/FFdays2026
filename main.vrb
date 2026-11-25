@@ -1,0 +1,30 @@
+\frametitle{\textcolor {activecolor}{The raygen program}}
+\begin{center}
+
+  \begin{lstlisting}
+extern "C" __global__ void __raygen__rg() {
+  const unsigned long long k = optixGetLaunchIndex().x;
+  if (k >= params.numPairs) return;
+  unsigned a, b;  unrank(k, params.N, a, b);       // k -> (i,j) global idx
+
+  float3 P = params.pts[a], Q = params.pts[b];
+  float3 d = Q - P;  float L = sqrtf(dot3(d,d));   // segment length
+  d /= L;                                          // unit direction
+
+  unsigned occluded = 1;                           // pessimistic
+  optixTrace(params.gas, P, d,
+             params.tmin, params.tmax, 0.0f,   // tmin, tmax, time
+             OptixVisibilityMask(255),
+             TERMINATE_ON_FIRST_HIT | DISABLE_CLOSESTHIT,
+             0, 1, 0, occluded);
+  if (!occluded) atomicOr(&params.bits[k >> 5], 1u << (k & 31));
+}
+\end{lstlisting}
+\end{center}
+ \begin{itemize}
+        \item \alert{Interval} $[t_{\min},t_{\max}]=[10^{-6}L,\ (1-10^{-5})L]$: the ray starts \alert{just after} $P$ and stops \alert{just before} $Q$.
+        \item \texttt{TERMINATE\_ON\_FIRST\_HIT}: a single obstacle is enough to conclude ``blocked''.
+        \item \texttt{DISABLE\_CLOSESTHIT}: we do not compute the closest hit (useless here).
+        \item \alert{Payload} = 1 integer (\texttt{occluded}) shared between raygen and miss.
+        \item Mask 255: the ray sees all the geometry.
+  \end{itemize}
