@@ -86,15 +86,35 @@
 \setlist[itemize,2]{label=\scalebox{1.2}{\(\circ\)}}
 \usepackage{listings}
 
+%\lstset{
+%  basicstyle=\ttfamily\scriptsize,
+%  keywordstyle=\color{blue}\bfseries,
+%  commentstyle=\color{gray}\itshape,
+%  language=C++,
+%  breaklines=true,
+%  frame=single,
+%  rulecolor=\color{gray},
+%  showstringspaces=false
+%}
 \lstset{
   basicstyle=\ttfamily\scriptsize,
   keywordstyle=\color{blue}\bfseries,
-  commentstyle=\color{gray}\itshape,
-  language=C++,
+ escapeinside={(*@}{@*)},
+    commentstyle=\color{black}\itshape,
+ language=C++,
   breaklines=true,
   frame=single,
   rulecolor=\color{gray},
   showstringspaces=false
+}
+\setlist[itemize,1]{
+    label=$\square$,
+    itemsep=0.6em
+}
+
+\setlist[itemize,2]{
+    label=$\circ$,
+    itemsep=0.4em
 }
 
 \usepackage{fvextra}
@@ -112,9 +132,10 @@
 \definecolor{darkorange}{rgb}{0.85,0.3,0.03}
 
 \definecolor{main}{rgb}{0.25,0.35,0.55}
-\definecolor{colorStruct}{rgb}{0.15,0.15,0.45}
+%\definecolor{colorStruct}{rgb}{0.15,0.15,0.45}
 %\definecolor{main}{rgb}{0.25,0.35,0.55}
 %\definecolor{colorStruct}{rgb}{0.2,0.3,0.5}
+\definecolor{colorStruct}{HTML}{19696e}
 \definecolor{colorStructLight}{rgb}{0.1,0.2,0.5}
 
 \definecolor{lightlightlightgray}{rgb}{0.93,0.93,0.93}
@@ -541,8 +562,14 @@
 \definecolor{pythonblue}{RGB}{0,0,180}
 \captionsetup[figure]{labelformat=empty}
 % Define colors for active and inactive sections
-\definecolor{activecolor}{rgb}{1,1,0} % yellow
+%\definecolor{activecolor}{rgb}{1,1,0} % yellow
+\definecolor{activecolor}{HTML}{F4D58D}
 \definecolor{inactivecolor}{rgb}{0.6, 0.6, 0.6} % equivalent to black!40
+\definecolor{rtblue}{RGB}{31,97,163}
+\definecolor{rtgreen}{RGB}{46,139,87}
+\definecolor{rtred}{RGB}{200,50,50}
+\definecolor{rtorange}{RGB}{230,140,30}
+\definecolor{rtgray}{RGB}{110,110,110}
 %\usefonttheme{serif}
 \newcommand{\bol}[1]{\boldsymbol{#1}}
 \newcommand{\dd}{\,\mathrm{d}}

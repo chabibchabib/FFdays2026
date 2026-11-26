@@ -1,0 +1,9 @@
+\babel@toc {english}{}\relax 
+\beamer@sectionintoc {1}{Motivation and application}{3}{0}{1}
+\beamer@sectionintoc {2}{The computational challenge}{6}{0}{2}
+\beamer@sectionintoc {3}{Ray tracing in a nutshell}{9}{0}{3}
+\beamer@sectionintoc {4}{OptiX and the algorithm}{15}{0}{4}
+\beamer@sectionintoc {5}{Interfacing FreeFEM++ $\leftrightarrow $ CUDA/OptiX}{22}{0}{5}
+\beamer@sectionintoc {6}{Application and results}{26}{0}{6}
+\beamer@sectionintoc {7}{Conclusion}{30}{0}{7}
+\beamer@sectionintoc {8}{Backup}{33}{1}{8}

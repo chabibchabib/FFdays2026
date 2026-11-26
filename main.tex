@@ -67,25 +67,78 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction to radiative transfer}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{\textcolor{activecolor}{Introduction}}
+%\begin{frame}{\textcolor{activecolor}{Introduction}}
+%  \begin{columns}[T]
+%    \begin{column}{0.58\textwidth}
+%      \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
+%        \item The Sun heats the Earth (short wavelengths); the Earth re-emits in the \textbf{infrared}, which the air partly absorbs and re-emits: this is the \textbf{greenhouse effect}.
+%        \item \textbf{Goal}: compute the atmospheric temperature $\textcolor{pythonblue}{\temperature (\bol{x})}$ in \textbf{3D}%, accounting for terrain (Chamonix valley), clouds and CO$_2$.
+%        \item \textbf{Difficulty}: the radiative intensity $\textcolor{darkgreen}{\intensity (\bol{x},\bol{\omega})}$ depends on position (3), direction (2) and frequency (1). The problem has \textbf{7 dimensions}.
+%        \item \textbf{Motivation}: assess the impact of aviation, where CO$_2$ accounts for only about 1/3 of the warming (the rest comes from NO$_x$ and contrails).
+%      \end{itemize}
+%    \end{column}
+%    \begin{column}{0.38\textwidth}
+%      \centering
+%      \begin{block}{Planck's law (black body)}
+%        \[ B_\nu(\temperature)=\frac{\nu^3}{e^{\nu/\temperature}-1} \]
+%        {\small Sun: $T_S\approx 5800\,$K\\ Earth: $T_E\approx 288\,$K}
+%      \end{block}
+%    \end{column}
+%  \end{columns}
+%\end{frame}
+\begin{frame}{\textcolor{activecolor}{Radiative transfer}}
   \begin{columns}[T]
-    \begin{column}{0.58\textwidth}
-      \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
-        \item The Sun heats the Earth (short wavelengths); the Earth re-emits in the \textbf{infrared}, which the air partly absorbs and re-emits: this is the \textbf{greenhouse effect}.
-        \item \textbf{Goal}: compute the atmospheric temperature $\textcolor{pythonblue}{\temperature (\bol{x})}$ in \textbf{3D}%, accounting for terrain (Chamonix valley), clouds and CO$_2$.
-        \item \textbf{Difficulty}: the radiative intensity $\textcolor{darkgreen}{\intensity (\bol{x},\bol{\omega})}$ depends on position (3), direction (2) and frequency (1). The problem has \textbf{7 dimensions}.
-        \item \textbf{Motivation}: assess the impact of aviation, where CO$_2$ accounts for only about 1/3 of the warming (the rest comes from NO$_x$ and contrails).
+    \begin{column}{0.55\textwidth}
+      \vspace{1.5cm}
+      \textbf{Goal:} compute the temperature $T(\bol{x})$ in the atmosphere, driven by radiation.
+      \vspace{0.3em}
+      \begin{itemize}
+        \item \textbf{Sun}: short waves, atmosphere mostly transparent
+        \item \textbf{Earth}: long waves (infrared), absorbed and re-emitted by air, clouds, CO$_2$, contrails
+        \item \textbf{Terrain} matters: mountains and valleys $\Rightarrow$ full 3D geometry
       \end{itemize}
+      \vspace{0.3em}
+      \[
+        \bol{\omega}\cdot\nabla I_\nu+\kappa_\nu I_\nu=\kappa_\nu B_\nu(T)
+        \;\;\longleftrightarrow\;\; T
+      \]
+      \vspace{-0.6em}
+      \begin{center}
+        \textcolor{red!70!black}{\textbf{Costly:}} $I_\nu(\bol{x},\bol{\omega})$ depends on 7 variables
+      \end{center}
     \end{column}
-    \begin{column}{0.38\textwidth}
+    \begin{column}{0.41\textwidth}
       \centering
+      \begin{tikzpicture}[scale=0.8]
+        % terrain
+        \fill[gray!55] (0,-0.3) -- (0,0.6) -- (1,0.9) -- (2,2.0) -- (3,0.6) -- (4,0.4) -- (5,1.5) -- (6,0.7) -- (6,-0.3) -- cycle;
+        % sun
+        \fill[yellow!80!orange] (5.2,4.6) circle (0.35);
+        \draw[orange!90!black, very thick, -{Stealth}] (4.9,4.2) -- (3.9,2.8);
+        \draw[orange!90!black, very thick, -{Stealth}] (4.2,4.3) -- (3.0,3.0);
+        % cloud
+        \fill[gray!25] (0.8,3.4) ellipse (0.9 and 0.4);
+        \fill[gray!25] (1.5,3.6) ellipse (0.7 and 0.35);
+        % infrared from the ground
+        \draw[red!70!black, very thick, -{Stealth}] (3.2,0.7) -- (3.2,2.4);
+        \draw[red!70!black, very thick, -{Stealth}] (4.0,0.5) -- (4.4,2.0);
+        % labels
+        \node[orange!90!black, font=\scriptsize] at (2.4,4.4) {short-wave};
+        \node[red!70!black, font=\scriptsize] at (5.0,2.7) {long-wave};
+        \node[font=\scriptsize] at (0.8,2.8) {cloud};
+        \node[font=\scriptsize] at (3.0,-0.05) {terrain};
+        \node[font=\scriptsize] at (3.6,3.7) {$T(\bol{x})$ ?};
+      \end{tikzpicture}
+
       \begin{block}{Planck's law (black body)}
         \[ B_\nu(\temperature)=\frac{\nu^3}{e^{\nu/\temperature}-1} \]
         {\small Sun: $T_S\approx 5800\,$K\\ Earth: $T_E\approx 288\,$K}
       \end{block}
+
     \end{column}
   \end{columns}
 \end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{\textcolor{activecolor}{Radiative transfer equations I}}
 
@@ -134,20 +187,20 @@
       = c_2\!\int_0^\infty\!\kappa_\nu J[\temperature^{n}]_\nu\dd\nu
     \]
   \end{block}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
+  %\begin{columns}[T]
+  %  \begin{column}{0.5\textwidth}
       \textbf{At each iteration $n$}:
       \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
         \item compute $J[\temperature^n]_\nu$: volume integral $+$ surface integral;
       \item solve the nonlinear temperature equation (\textbf{Newton}) to get $\temperature^{n+1}$.
       \end{itemize}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \textbf{Discretization}: $P^1$ finite elements on a tetrahedral mesh ($N$ vertices).
+    %\end{column}
+    %\begin{column}{0.5\textwidth}
+      \textbf{Discretization}: Finite elements on a tetrahedral mesh ($N$ vertices).
       \[ \mathbf{j}_\nu = \mathbf{G}_\kappa\,\mathbf{b}_\nu,\quad \mathbf{G}_\kappa\in\mathbb{R}^{N\times N} \]
       \alert{$\mathbf{G}_\kappa$ is dense: $O(N^2)$ memory.}
-    \end{column}
-  \end{columns}
+  %  \end{column}
+  %\end{columns}
   %\medskip
   %\textbf{Frequency integral}: the kernels depend on $\nu$ only through $\kappa_\nu$, so frequencies are grouped by value of $\kappa$ (8 values instead of 683 measurements).
 \end{frame}
@@ -185,173 +238,308 @@
   \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{\textcolor{activecolor}{Speeding up with ray tracing}}
+%\begin{frame}{\textcolor{activecolor}{Speeding up with ray tracing}}
+%  \begin{columns}[T]
+%    \begin{column}{0.58\textwidth}
+%      \medskip
+%      The radiation reaching $\bol{x}$ travels along a segment inside the air $\Omega$. If a mountain blocks $[\bol{x},\bol{x}']$, no light goes through it, and the contribution of $\bol{x}'$ is zero (the ground is accounted for by the surface term). So the kernel carries a visibility factor:
+%      \[
+%        G^{ij}_\kappa=\frac{1}{4\pi}\int_\Omega
+%        \underbrace{V(\bol{x}^i,\bol{x}')}_{\in\{0,1\}}\,\kappa\,
+%        \frac{e^{-\int_{[\bol{x}^i,\bol{x}']}\kappa}}{|\bol{x}^i-\bol{x}'|^2}\,\hat w^j(\bol{x}')\dd\bol{x}'
+%      \]
+%      \vspace{-0.4em}
+%      \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
+%        \item \textbf{Skip} the line integral $\int_{[\bol{x},\bol{x}']}\kappa$ for every hidden pair: many matrix entries are exactly $0$.
+%        \item \textbf{Early stop}: while tracing a ray, stop once the optical depth $\int\kappa$ is large, since $e^{-\int\kappa}\approx 0$.
+%        \item $V$ does not depend on $\nu$: compute it \textbf{once} and reuse it for every value of $\kappa$.
+%      \end{itemize}
+%    \end{column}
+%    \begin{column}{0.38\textwidth}
+%      \centering
+%      \begin{tikzpicture}[scale=0.8]
+%        \fill[gray!55] (0,-0.5) -- (0,0.3) -- (2,0.4) -- (3.2,1.0) -- (4,2.2) -- (5,1.0) -- (7.5,0.3) -- (7.5,-0.5) -- cycle;
+%        \node at (3.9,0.2) {\scriptsize terrain};
+%        \node at (1.2,3.0) {\scriptsize air $\Omega$};
+%        \fill (0.8,0.9) circle (2.5pt) node[below left] {\scriptsize $\bol{x}$};
+%        \fill (2.2,1.8) circle (2.5pt) node[above] {\scriptsize $\bol{x}'$};
+%        \fill (7,0.9) circle (2.5pt) node[above right] {\scriptsize $\bol{x}''$};
+%        \draw[green!50!black, very thick] (0.8,0.9) -- (2.2,1.8);
+%        \draw[red!70!black, very thick, dashed] (0.8,0.9) -- (7,0.9);
+%        \node[green!40!black, font=\scriptsize, align=center] at (1.0,2.0) {visible};
+%        \node[red!70!black, font=\scriptsize] at (6.2,1.45) {hidden};
+%      \end{tikzpicture}
+%
+%      \smallskip
+%      {\footnotesize \textcolor{green!40!black}{green}: computed \quad
+%      \textcolor{red!70!black}{red}: skipped}
+%
+%      \medskip
+%      \begin{alertblock}{Caveat}
+%        \footnotesize $V$ is discontinuous, so blocks that are partly visible may be harder to compress with ACA (higher ranks). Fully hidden blocks are free.
+%      \end{alertblock}
+%    \end{column}
+%  \end{columns}
+%\end{frame}
+%\begin{frame}{\textcolor{activecolor}{Speeding up with ray tracing}}
+%  \begin{columns}[T]
+%    \begin{column}{0.55\textwidth}
+%      \medskip
+%      A mountain between $\bol{x}$ and $\bol{x}'$ blocks the light: add a visibility factor.
+%      \[
+%        G^{ij}_\kappa=\frac{1}{4\pi}\int_\Omega
+%        \underbrace{V(\bol{x}^i,\bol{x}')}_{\in\{0,1\}}\,\kappa\,
+%        \frac{e^{-\int_{[\bol{x}^i,\bol{x}']}\kappa}}{|\bol{x}^i-\bol{x}'|^2}\,\hat w^j(\bol{x}')\dd\bol{x}'
+%      \]
+%      \vspace{-0.4em}
+%      \begin{itemize}[label=$\square$]\setlength\itemsep{0.8em}
+%        \item \textbf{Skip} hidden pairs: entries exactly $0$
+%        \item \textbf{Early stop} when $\int\kappa$ is large
+%        \item $V$ independent of $\nu$: compute \textbf{once}
+%      \end{itemize}
+%    \end{column}
+%    \begin{column}{0.41\textwidth}
+%      \centering
+%      \begin{tikzpicture}[scale=0.8]
+%        \fill[gray!55] (0,-0.5) -- (0,0.3) -- (2,0.4) -- (3.2,1.0) -- (4,2.2) -- (5,1.0) -- (7.5,0.3) -- (7.5,-0.5) -- cycle;
+%        \node at (3.9,0.2) {\scriptsize terrain};
+%        \node at (1.2,3.0) {\scriptsize air $\Omega$};
+%        \fill (0.8,0.9) circle (2.5pt) node[below left] {\scriptsize $\bol{x}$};
+%        \fill (2.2,1.8) circle (2.5pt) node[above] {\scriptsize $\bol{x}'$};
+%        \fill (7,0.9) circle (2.5pt) node[above right] {\scriptsize $\bol{x}''$};
+%        \draw[green!50!black, very thick] (0.8,0.9) -- (2.2,1.8);
+%        \draw[red!70!black, very thick, dashed] (0.8,0.9) -- (7,0.9);
+%        \node[green!40!black, font=\scriptsize, align=center] at (1.0,2.0) {visible};
+%        \node[red!70!black, font=\scriptsize] at (6.2,1.45) {hidden};
+%      \end{tikzpicture}
+%
+%      \smallskip
+%      {\footnotesize \textcolor{green!40!black}{green}: computed \quad
+%      \textcolor{red!70!black}{red}: skipped}
+%
+%      \medskip
+%      {\footnotesize \textcolor{red!70!black}{\textbf{Caveat:}} $V$ discontinuous $\Rightarrow$ higher ACA ranks on partly visible blocks}
+%    \end{column}
+%  \end{columns}
+%\end{frame}
+
+\begin{frame}{\textcolor{activecolor}{Motivation: why ray tracing?}}
+  \medskip
   \begin{columns}[T]
-    \begin{column}{0.58\textwidth}
+    \begin{column}{0.55\textwidth}
       \medskip
-      The radiation reaching $\bol{x}$ travels along a segment inside the air $\Omega$. If a mountain blocks $[\bol{x},\bol{x}']$, no light goes through it, and the contribution of $\bol{x}'$ is zero (the ground is accounted for by the surface term). So the kernel carries a visibility factor:
+      \textbf{Current cost.} For every value of $\kappa$, assemble
       \[
         G^{ij}_\kappa=\frac{1}{4\pi}\int_\Omega
-        \underbrace{V(\bol{x}^i,\bol{x}')}_{\in\{0,1\}}\,\kappa\,
-        \frac{e^{-\int_{[\bol{x}^i,\bol{x}']}\kappa}}{|\bol{x}^i-\bol{x}'|^2}\,\hat w^j(\bol{x}')\dd\bol{x}'
+        \kappa\,\frac{e^{-\int_{[\bol{x}^i,\bol{x}']}\kappa}}{|\bol{x}^i-\bol{x}'|^2}\,\hat w^j(\bol{x}')\dd\bol{x}'
       \]
       \vspace{-0.4em}
-      \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
-        \item \textbf{Skip} the line integral $\int_{[\bol{x},\bol{x}']}\kappa$ for every hidden pair: many matrix entries are exactly $0$.
-        \item \textbf{Early stop}: while tracing a ray, stop once the optical depth $\int\kappa$ is large, since $e^{-\int\kappa}\approx 0$.
-        \item $V$ does not depend on $\nu$: compute it \textbf{once} and reuse it for every value of $\kappa$.
+      \begin{itemize}
+        \item $\sim 10^6$ vertices, $2\times$ (\#values of $\kappa$) $\mathcal H$-matrices
+        \item every entry needs a \textbf{line integral} of $\kappa$
+        \item volume assembly: $\sim$ 130 s on 384 cores
       \end{itemize}
-    \end{column}
-    \begin{column}{0.38\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.8]
-        \fill[gray!55] (0,-0.5) -- (0,0.3) -- (2,0.4) -- (3.2,1.0) -- (4,2.2) -- (5,1.0) -- (7.5,0.3) -- (7.5,-0.5) -- cycle;
-        \node at (3.9,0.2) {\scriptsize terrain};
-        \node at (1.2,3.0) {\scriptsize air $\Omega$};
-        \fill (0.8,0.9) circle (2.5pt) node[below left] {\scriptsize $\bol{x}$};
-        \fill (2.2,1.8) circle (2.5pt) node[above] {\scriptsize $\bol{x}'$};
-        \fill (7,0.9) circle (2.5pt) node[above right] {\scriptsize $\bol{x}''$};
-        \draw[green!50!black, very thick] (0.8,0.9) -- (2.2,1.8);
-        \draw[red!70!black, very thick, dashed] (0.8,0.9) -- (7,0.9);
-        \node[green!40!black, font=\scriptsize, align=center] at (1.0,2.0) {visible};
-        \node[red!70!black, font=\scriptsize] at (6.2,1.45) {hidden};
-      \end{tikzpicture}
-
-      \smallskip
-      {\footnotesize \textcolor{green!40!black}{green}: computed \quad
-      \textcolor{red!70!black}{red}: skipped}
-
       \medskip
-      \begin{alertblock}{Caveat}
-        \footnotesize $V$ is discontinuous, so blocks that are partly visible may be harder to compress with ACA (higher ranks). Fully hidden blocks are free.
-      \end{alertblock}
+      \visible<2->{\textbf{Idea.} In a valley, most pairs $(\bol{x},\bol{x}')$ 
+    do not see each other: use \textbf{ray tracing} to avoid computing them.}
+    \end{column}
+    \begin{column}{0.41\textwidth}
+      \centering
+      \visible<2->{
+        \vspace{1cm}
+        \begin{tikzpicture}[scale=1]
+        \fill[gray!55] (0,-0.3) -- (0,1.6) -- (0.6,2.4) -- (1.4,1.0) -- (2.2,0.4) -- (3.2,0.3) -- (4.2,0.7) -- (5.2,1.6) -- (6,1.2) -- (6,-0.3) -- cycle;
+        \fill (3,0.5) circle (2.5pt) node[below] {\scriptsize $\bol{x}$};
+        \fill (1,2.0) circle (2.5pt) node[above] {\scriptsize $\bol{x}'$};
+        \fill (5.9,1.65) circle (2.5pt) node[above] {\scriptsize $\bol{x}''$};
+        \draw[green!50!black, very thick] (3,0.5) -- (1,2.0);
+        \draw[red!70!black, very thick, dashed] (3,0.5) -- (5.9,1.65);
+        \node[red!70!black, font=\scriptsize] at (4.4,1.75) {hidden};
+        \node[green!40!black, font=\scriptsize] at (1.7,1.75) {visible};
+        \end{tikzpicture}
+
+        \smallskip
+        {
+        \footnotesize \textcolor{green!40!black}{green}: computed \quad
+        \textcolor{red!70!black}{red}: skipped}
+      }
     \end{column}
   \end{columns}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Raytracing}
-\begin{frame}{\textcolor{activecolor}{What is a ray?}}
- \begin{columns}[T]
-    % Left: definition
-    \begin{column}{0.42\textwidth}
-      %\small
-      \vspace{1.2cm}
-      A \textbf{ray} is a half-line defined by two quantities:
-      \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
-        \item an \textbf{origin} $\mathbf{o}$ (where it starts),
-        \item a \textbf{direction} $\mathbf{d}$ (where it goes, usually a unit vector).
-      \end{itemize}
- 
-      \medskip
-      Every point on the ray is given by the parameter $t$:
-      \[
-        \textcolor{blue!70!black}{P(t)} = \mathbf{o} + t\,\textcolor{red!70!black}{\mathbf{d}}
-      \]
-      for $t \in [t_{\min}, t_{\max}]$.  
-        
-      \medskip
-      \visible<2->{ 
-      \alert{Core question:} what is the first surface hit?
-    }
-    \end{column}
- 
-    \begin{column}{0.58\textwidth}
-      \vspace{1cm}
-  
-      \centering
-      \resizebox{\textwidth}{!}{\input{figures/tikz/ray_figure.tikz}}
-    \end{column}
-  \end{columns}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Ray tracing}
+%\begin{frame}{\textcolor{activecolor}{What is a ray?}}
+% \begin{columns}[T]
+%    % Left: definition
+%    \begin{column}{0.42\textwidth}
+%      %\small
+%      \vspace{1.2cm}
+%      A \textbf{ray} is a half-line defined by two quantities:
+%      \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
+%        \item an \textbf{origin} $\mathbf{o}$ (where it starts),
+%        \item a \textbf{direction} $\mathbf{d}$ (where it goes, usually a unit vector).
+%      \end{itemize}
+% 
+%      \medskip
+%      Every point on the ray is given by the parameter $t$:
+%      \[
+%        \textcolor{blue!70!black}{P(t)} = \mathbf{o} + t\,\textcolor{red!70!black}{\mathbf{d}}
+%      \]
+%      for $t \in [t_{\min}, t_{\max}]$.  
+%        
+%      \medskip
+%      \visible<2->{ 
+%      \alert{Core question:} what is the first surface hit?
+%    }
+%    \end{column}
+% 
+%    \begin{column}{0.58\textwidth}
+%      \vspace{1cm}
+%  
+%      \centering
+%      \resizebox{\textwidth}{!}{\input{figures/tikz/ray_figure.tikz}}
+%    \end{column}
+%  \end{columns}
+%\end{frame}
 
-\begin{frame}{\textcolor{activecolor}{The quadratic wall}}
-  \medskip
-  \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
-    \item $V$ is symmetric with a zero diagonal: only pairs $i<j$ matter.
-    \[ \text{numPairs}=\frac{N(N-1)}{2} \]
-    \item Each pair = one \alert{ray}, each ray must be tested against the obstacles.
-  \end{itemize}
-  \vspace{2mm}
+\begin{frame}{\textcolor{activecolor}{Rays \& intersection test}}
+  A ray: $R(t)=O+t\,\vec d,\ t\in[t_{\min},t_{\max}]$. 
   
-  %\begin{alertblock}{Key ideas:}
-    \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
-      \item Store the result in a \alert{triangular bitset}.
-      \begin{center}
-  \begin{tabular}{|rrrr|}
-    \hline
-    $N$ (triangles) & pairs & bitset (1 bit/pair) & full \texttt{long} matrix \\ \hline
-    $10^3$ & $5\cdot10^5$ & 62 KB & 8 MB \\
-    \hline
-    $10^4$ & $5\cdot10^7$ & 6 MB & 800 MB \\
-        \hline
-    $10^5$ & $5\cdot10^9$ & 625 MB & 80 GB \\ \hline
-  \end{tabular}
+  \alert{Occlusion query}: is there \emph{any} hit?
+  \begin{center}
+  \begin{tikzpicture}
+    \fill (0,0) circle (2pt) node[below left] {$O$};
+    \draw[arr,rtblue] (0,0) -- (3,1.2) node[midway,above,sloped,font=\scriptsize] {direction $\vec d$};
+    \draw[rtblue,thick] (3,1.2) -- (4.6,1.84);
+    \fill[rtgreen] (0.6,0.24) circle (1.5pt) node[below right,font=\scriptsize] {$t_{\min}$};
+    \fill[rtgreen] (4.6,1.84) circle (1.5pt) node[below right,font=\scriptsize] {$t_{\max}$};
+    \fill[rtred!70] (3.0,0.7) -- (3.4,1.9) -- (3.8,0.9) -- cycle;
+    \fill[rtred] (3.27,1.31) circle (2pt);
+    \node[rtred,font=\scriptsize,right] at (3.9,1.6) {hit};
+  \end{tikzpicture}
+  
   \end{center}
-
-    %\item Intersection detection is computationally expensive $\Longrightarrow$ Use the GPU's \alert{ray-tracing hardware} to test the rays.
-    \item  Testing millions or even billions of ray–mesh intersections is computationally expensive, even on a GPU.
-    $\Longrightarrow$ Reducing the number of intersection tests with \textbf{Bounding Volume Hierarchy (BVH)}
+  \begin{itemize}
+    \item Ray--triangle test (M\"oller--Trumbore): a few dot/cross products $\Longrightarrow $\alert{cheap}.
+    \item The difficulty is not one test, it is the \alert{number} of tests (triangles \& rays).
   \end{itemize}
-  %\end{alertblock}
 \end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{\textcolor{activecolor}{BVH: a hierarchy of bounding boxes}}
+\begin{frame}{\textcolor{activecolor}{Bounding Volume Hierarchy (BVH)}}
   \begin{columns}[T]
-    \begin{column}{0.52\textwidth}
-      \vspace{1cm}
-        \begin{center}
-  \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
-    \item Each node = an axis-aligned box (AABB) containing its whole subtree.
-    \item The \alert{leaves} hold a few triangles.
-    \item Building the BVH is expensive, the cost is amortized over millions of rays
-    \item If a ray misses a box, it misses \alert{everything inside it}.
-      \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
-      \item Test the ray against the root box (ray-box test, very cheap).
-      \item If hit: descend into both children; otherwise \alert{prune} the whole subtree.
-      \item On reaching a leaf: test the ray against its point.
-      \item Stop at the first hit.
-      \end{itemize}
- \end{itemize}
-  \end{center}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \medskip
+    \begin{column}{0.5\textwidth}
+  %\begin{center}
+  %\begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
+    %\item Each node = an axis-aligned box (AABB) containing its whole subtree.
+    %\item The \alert{leaves} hold a few triangles.
+    %\item Building the BVH is expensive, the cost is amortized over millions of rays
+    %\item If a ray misses a box, it misses \alert{everything inside it}.
+    %  \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
+    %  \item Test the ray against the root box (ray-box test, very cheap).
+    %  \item If hit: descend into both children; otherwise \alert{prune} the whole subtree.
+    %  \item On reaching a leaf: test the ray against its point.
+    %  \item Stop at the first hit.
+    %\end{itemize}
+  %\end{center}
             \centering
-      \begin{tikzpicture}[scale=0.75]
+      \begin{tikzpicture}[scale=0.8]
         % triangles (small dots)
-        \foreach \x/\y in {0.5/0.5,1.1/0.9,0.6/1.5,1.4/1.7}{\fill[red!70] (\x,\y) circle (3pt);}
-        \foreach \x/\y in {3.3/0.4,3.9/0.9,3.5/1.4,4.3/0.6}{\fill[red!70] (\x,\y) circle (3pt);}
-        \foreach \x/\y in {1.8/3.3,2.5/3.7,3.2/3.2,2.6/2.8}{\fill[red!70] (\x,\y) circle (3pt);}
+        %\foreach \x/\y in {0.5/0.5,1.1/0.9,0.6/1.5,1.4/1.7}{\fill[red!70] (\x,\y) circle (3pt);}
+        %\foreach \x/\y in {3.3/0.4,3.9/0.9,3.5/1.4,4.3/0.6}{\fill[red!70] (\x,\y) circle (3pt);}
+        %\foreach \x/\y in {1.8/3.3,2.5/3.7,3.2/3.2,2.6/2.8}{\fill[red!70] (\x,\y) circle (3pt);}
+        % First group of triangles
+        \foreach \x/\y in {0.5/0.5,1.1/0.9,0.6/1.5,1.4/1.7}{
+            \fill[red!70] (\x,\y) -- ++(0.3,0.2) -- ++(-0.1,0.3) -- cycle;
+        }
+        % Second group
+        \foreach \x/\y in {3.3/0.4,3.9/0.9,3.5/1.4,4.3/0.6}{
+            \fill[red!70] (\x,\y) -- ++(0.3,0.2) -- ++(-0.1,0.3) -- cycle;
+        }
+        % Third group
+        \foreach \x/\y in {1.8/3.3,2.5/3.7,3.2/3.2,2.6/2.8}{
+            \fill[red!70] (\x,\y) -- ++(0.3,0.2) -- ++(-0.1,0.3) -- cycle;
+        }
         % leaf boxes
-        \draw[green,thick] (0.2,0.2) rectangle (1.7,2.0);
-        \draw[green,thick] (3.0,0.1) rectangle (4.6,1.7);
-        \draw[green,thick] (1.5,2.5) rectangle (3.5,4.0);
+        \draw[rtgreen,thick] (0.2,0.2) rectangle (1.9,2.2);
+        \draw[rtgreen,thick] (3.0,0.1) rectangle (4.7,1.9);
+        \draw[rtgreen,thick] (1.5,2.5) rectangle (3.6,4.2);
         % intermediate box
-        \draw[orange,thick,dashed] (0.0,0.0) rectangle (4.8,2.2);
+        \draw[rtorange,thick,dashed] (0.0,0.0) rectangle (4.8,2.3);
         % root
-        \draw[blue,very thick] (-0.2,-0.2) rectangle (5.0,4.2);
-        \node[blue,font=\scriptsize] at (4.3,3.8) {Root};
+        \draw[rtblue,very thick] (-0.2,-0.2) rectangle (5.0,4.4);
+        \node[rtblue,font=\scriptsize] at (4.3,3.8) {Root};
       \end{tikzpicture}
 
-      \vspace{0.5 cm}
-      
-      \begin{tikzpicture}[level distance=1.2cm,
-          level 1/.style={sibling distance=2.4cm},
-          level 2/.style={sibling distance=1.3cm},
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \medskip
+
+
+      %\vspace{0.5 cm}
+      \centering
+      \visible<2->
+      {
+        \begin{tikzpicture}[ scale=1.3,level distance=1.2cm,
+          level 1/.style={sibling distance=2.2cm},
+          level 2/.style={sibling distance=1.2cm},
           every node/.style={font=\scriptsize}]
-        \node[box=blue] {Root}
-          child { node[box=orange] {Box A}
-            child { node[box=green] {L1} }
-            child { node[box=green] {L2} } }
-          child { node[box=green] {L3} };
+        \node[box=rtblue] {Root}
+          child { node[box=rtorange] {Box A}
+            child { node[box=rtgreen] {L1} }
+            child { node[box=rtgreen] {L2} } }
+          child { node[box=rtgreen] {L3} };
       \end{tikzpicture}
+      }
     \end{column}
   \end{columns}
+  \begin{itemize}
+    \item Group nearby triangles in axis-aligned boxes (leaves).
+     \visible<2->{
+    \item Group boxes recursively: if a ray misses a box, it misses \alert{everything inside}.
+    \item Traversal: test root, descend only into hit boxes, test triangles only in reached leaves. 
+    \item Built \alert{once}, used for millions of rays.
+     }
+     \visible<2->{
+      \item Each ray still requires BVH traversal and ray–AABB / ray–triangle tests.
+      \item High computational cost when dealing with $\uparrow$ number of rays and triangles.
 
+      }
+  \end{itemize}
 
 \end{frame}
+%\begin{frame}{\textcolor{activecolor}{The quadratic wall}}
+%  \medskip
+%  \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
+%    \item $V$ is symmetric with a zero diagonal: only pairs $i<j$ matter.
+%    \[ \text{numPairs}=\frac{N(N-1)}{2} \]
+%    \item Each pair = one ray, each ray must be tested against the obstacles.
+%  \end{itemize}
+%  \vspace{2mm}
+%  
+%  %\begin{alertblock}{Key ideas:}
+%    \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
+%      \item Store the result in a \alert{triangular bitset}.
+%      \begin{center}
+%  \begin{tabular}{|rrrr|}
+%    \hline
+%    $N$ (triangles) & pairs & bitset (1 bit/pair) & full \texttt{long} matrix \\ \hline
+%    $10^3$ & $5\cdot10^5$ & 62 KB & 8 MB \\
+%    \hline
+%    $10^4$ & $5\cdot10^7$ & 6 MB & 800 MB \\
+%        \hline
+%    $10^5$ & $5\cdot10^9$ & 625 MB & 80 GB \\ \hline
+%  \end{tabular}
+%  \end{center}
+%
+%    %\item Intersection detection is computationally expensive $\Longrightarrow$ Use the GPU's \alert{ray-tracing hardware} to test the rays.
+%    \item  Testing millions or even billions of ray–mesh intersections is computationally expensive, even on a GPU.
+%    $\Longrightarrow$ Reducing the number of intersection tests with \textbf{Bounding Volume Hierarchy (BVH)}
+%  \end{itemize}
+%  %\end{alertblock}
+%\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\begin{frame}{\textcolor{activecolor}{The hardware side: RT Cores}}
 %  \begin{columns}[T]
@@ -386,84 +574,122 @@
 %\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{\textcolor{activecolor}{The hardware side: RT Cores}}
+  \medskip
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
-      \vspace{1.8cm}
-      Modern NVIDIA GPUs (RTX) contain a \alert{dedicated circuit} for ray tracing, the \alert{RT Core}:
       \begin{itemize}[label=$\square$]\setlength\itemsep{0.8em}
         \item The regular GPU cores are \emph{general-purpose}: they run any program, in parallel.
-        \item The RT Core does \alert{one thing only}: given a ray, it finds the first object hit, by descending the tree of nested boxes (the BVH).
+        \item Modern NVIDIA GPUs (RTX) contain a \alert{dedicated circuit} for ray tracing, the \alert{RT Core}.
+        \item The RT Core: given a ray, find the first object hit, by descending the tree of nested boxes (the BVH).
         \item It is the same operation repeated billions of times: ideal to wire directly into silicon.
-        \item The general-purpose cores just \alert{send} the ray and \alert{read} the answer; meanwhile they stay free for other computations.
+        \item The general-purpose cores: \alert{send} the ray and \alert{read} the answer, meanwhile they stay free for other computations.
+      \visible<2->{
+        \item \textbf{NVIDIA OptiX:} API providing access
+      to hardware-accelerated ray tracing.
+    \item \textbf{Our approach:} use OptiX to exploit RT Cores
+    for GPU-accelerated visibility computations.
+      }
       \end{itemize}
     \end{column}
 
     \begin{column}{0.48\textwidth}
-      \vspace{1.5cm}
+      \vspace{1cm}
       \centering
       \begin{tikzpicture}[node distance=0.9cm]
         \node[box=blue,minimum width=3.6cm] (sm) {General-purpose cores\\(our program)};
         \node[box=orange,minimum width=3.6cm,below=1.3cm of sm] (rt) {RT Core\\finds the first object hit};
         \node[box=gray,minimum width=3.6cm,below=1.3cm of rt] (mem) {Scene tree (BVH) in memory};
-        \draw[arr] ([xshift=-0.6cm]sm.south) -- node[left,font=\scriptsize] {ray} ([xshift=-0.6cm]rt.north);
-        \draw[arr] ([xshift=0.6cm]rt.north) -- node[right,font=\scriptsize] {hit / miss} ([xshift=0.6cm]sm.south);
+        \draw[arr] ([xshift=-0.6cm]sm.south) -- node[left,font=\normalsize] {ray} ([xshift=-0.6cm]rt.north);
+        \draw[arr] ([xshift=0.6cm]rt.north) -- node[right,font=\normalsize] {hit / miss} ([xshift=0.6cm]sm.south);
         \draw[arr,<->] (rt) -- (mem);
       \end{tikzpicture}
     \end{column}
   \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{\textcolor{activecolor}{OptiX: the API driving the RT Cores}}
-  \medskip
-  OptiX is a \alert{framework with blanks}: NVIDIA provides the tree and its traversal, we only write
-  small programs saying what to do \alert{before} and \alert{after} a ray is traced.
-  \vspace{2mm}
-  \begin{center}
-  \begin{tikzpicture}[node distance=1.2cm and 1.4cm]
-    \node[box=green] (rg) {Ray launch\\\scriptsize \texttt{raygen}};
-    \node[box=blue,right=of rg] (gas) {Scene tree (BVH)\\\scriptsize traversed by the RT Core};
-    \node[box=red,above right=0.3cm and 1.4cm of gas] (hit) {If hit\\\scriptsize \texttt{hit group} (empty here)};
-    \node[box=orange,below right=0.3cm and 1.4cm of gas] (ms) {If no hit\\\scriptsize \texttt{miss}};
-    \draw[arr] (rg) -- node[above,font=\scriptsize] {ray} (gas);
-    \draw[arr] (gas) -- (hit);
-    \draw[arr] (gas) -- (ms);
-  \end{tikzpicture}
-  \end{center}
-  \medskip
-  \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
-    \item \textbf{We write}: where each ray starts and what to do on a hit or a miss.
-    \item \textbf{NVIDIA provides}: the BVH over our triangles (the \emph{GAS}) and its traversal.
-    \item \textbf{Bookkeeping} (pipeline, SBT): assembles the programs and tells OptiX which one to call; trivial with a single object.
-  \end{itemize}
-\end{frame}
+%\begin{frame}{\textcolor{activecolor}{OptiX: the API driving the RT Cores}}
+%  \medskip
+%  OptiX is a \alert{framework with blanks}: NVIDIA provides the tree and its traversal, we only write
+%  small programs saying what to do \alert{before} and \alert{after} a ray is traced.
+%  \vspace{2mm}
+%  \begin{center}
+%  \begin{tikzpicture}[node distance=1.2cm and 1.4cm]
+%    \node[box=green] (rg) {Ray launch\\\scriptsize \texttt{raygen}};
+%    \node[box=blue,right=of rg] (gas) {Scene tree (BVH)\\\scriptsize traversed by the RT Core};
+%    \node[box=red,above right=0.3cm and 1.4cm of gas] (hit) {If hit\\\scriptsize \texttt{hit group} (empty here)};
+%    \node[box=orange,below right=0.3cm and 1.4cm of gas] (ms) {If no hit\\\scriptsize \texttt{miss}};
+%    \draw[arr] (rg) -- node[above,font=\scriptsize] {ray} (gas);
+%    \draw[arr] (gas) -- (hit);
+%    \draw[arr] (gas) -- (ms);
+%  \end{tikzpicture}
+%  \end{center}
+%  \medskip
+%  \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
+%    \item \textbf{We write}: where each ray starts and what to do on a hit or a miss.
+%    \item \textbf{NVIDIA provides}: the BVH over our triangles (the \emph{GAS}) and its traversal.
+%    \item \textbf{Bookkeeping} (pipeline, SBT): assembles the programs and tells OptiX which one to call; trivial with a single object.
+%  \end{itemize}
+%\end{frame}
 \section{Implementation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{\textcolor{activecolor}{Pipeline overview}}
-  \begin{center}
-  \resizebox{\textwidth}{!}{%
-  \begin{tikzpicture}[node distance=0.7cm,font=\small]
-    \node[box=blue,text width=3.2cm]   (a) {\textbf{1. Prepare}\\[1pt]\scriptsize points, normals, obstacle triangles from the FreeFEM meshes};
-    \node[box=orange,text width=3.2cm,right=of a] (b) {\textbf{2. Set up}\\[1pt]\scriptsize copy to GPU, build the BVH, load the programs (once)};
-    \node[box=orange,text width=3.2cm,right=of b] (c) {\textbf{3. Trace}\\[1pt]\scriptsize one ray per pair $(i,j)$, in batches};
-    \node[box=blue,text width=3.2cm,right=of c]   (d) {\textbf{4. Collect}\\[1pt]\scriptsize bits $\rightarrow$ matrix $V$};
-    \draw[arr] (a)--(b);
-    \draw[arr] (b)--(c);
-    \draw[arr] (c)--(d);
-    \node[below=0.15cm of a,blue]   {CPU};
-    \node[below=0.15cm of b,orange] {GPU};
-    \node[below=0.15cm of c,orange] {GPU};
-    \node[below=0.15cm of d,blue]   {CPU};
-  \end{tikzpicture}}
-  \end{center}
-  \vspace{3mm}
-  \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
-    \item \alert{Input}: points $x_1,\dots,x_N$ and the obstacle mesh.
-    \item \alert{Output}: the matrix $V\in\{0,1\}^{N\times N}$, with $V_{ij}=1$ iff the segment $[x_i,x_j]$ meets no obstacle.
-    \item \alert{Cost}: $\displaystyle \frac{N(N-1)}{2}$ independent tests; only step 3 scales with $N^2$, and it runs on the RT Cores.
-    \item Called from \texttt{FreeFEM++} as \texttt{OptixBuildVisibilityPairs3D(Th3, ThS, V)}.
-    \item The \texttt{.cu} is compiled separately to .ptx (\texttt{nvcc -ptx}) and loaded at runtime
-  \end{itemize}
+\begin{frame}{Running example: $N=5$, one obstacle}
+  \begin{columns}[T]
+    \begin{column}{0.45\textwidth}
+      \begin{tikzpicture}[scale=0.95]
+        \fill[rtred!70] (0,0) ellipse (0.4 and 0.3);
+        \node[rtred,font=\normalsize] at (0,-0.55) {obstacle};
+        \coordinate (p0) at (-2,0); \coordinate (p1) at (-1,1.2); \coordinate (p2) at (0,1.8);
+        \coordinate (p3) at (2,0);  \coordinate (p4) at (1,-1.2);
+        \draw[rtred,dashed,thick] (p0)--(p3);
+        \draw[rtred,dashed,thick] (p1)--(p4);
+        \foreach \n/\a in {0/left,1/above left,2/above,3/right,4/below right}{
+          \fill (p\n) circle (2pt) node[\a,font=\normalsize] {$P_\n$};}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.53\textwidth}
+      \begin{itemize}
+        \item 5 points, 10 pairs, 10 rays.
+        \item Blocked: $(0,3)$ and $(1,4)$.
+        \item We will follow this case through indexing, kernel and bitset.
+      \end{itemize}
+      \vspace{2mm}
+      \small
+      \begin{tabular}{c|cccccccccc}
+        $k$ & 0&1&2&3&4&5&6&7&8&9\\ \hline
+        $(i,j)$ & 01&02&03&04&12&13&14&23&24&34\\
+        bit & 1&1&\alert{0}&1&1&1&\alert{0}&1&1&1
+      \end{tabular}
+    \end{column}
+  \end{columns}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{frame}{\textcolor{activecolor}{Pipeline overview}}
+%  \begin{center}
+%  \resizebox{\textwidth}{!}{%
+%  \begin{tikzpicture}[node distance=0.7cm,font=\normalsize]
+%    \node[box=blue,text width=3.2cm]   (a) {\textbf{1. Prepare}\\[1pt]\scriptsize points, normals, obstacle triangles from the FreeFEM meshes};
+%    \node[box=orange,text width=3.2cm,right=of a] (b) {\textbf{2. Set up}\\[1pt]\scriptsize copy to GPU, build the BVH, load the programs (once)};
+%    \node[box=orange,text width=3.2cm,right=of b] (c) {\textbf{3. Trace}\\[1pt]\scriptsize one ray per pair $(i,j)$, in batches};
+%    \node[box=blue,text width=3.2cm,right=of c]   (d) {\textbf{4. Collect}\\[1pt]\scriptsize bits $\rightarrow$ matrix $V$};
+%    \draw[arr] (a)--(b);
+%    \draw[arr] (b)--(c);
+%    \draw[arr] (c)--(d);
+%    \node[below=0.15cm of a,blue]   {CPU};
+%    \node[below=0.15cm of b,orange] {GPU};
+%    \node[below=0.15cm of c,orange] {GPU};
+%    \node[below=0.15cm of d,blue]   {CPU};
+%  \end{tikzpicture}}
+%  \end{center}
+%  \vspace{3mm}
+%  \begin{itemize}[label=$\square$]\setlength\itemsep{0.6em}
+%    \item \textbf{Input}: points $x_1,\dots,x_N$ and the obstacle mesh.
+%    \item \textbf{Output}: the matrix $V\in\{0,1\}^{N\times N}$, with $V_{ij}=1$ iff the segment $[x_i,x_j]$ meets no obstacle.
+%    \item Cost: $\displaystyle \frac{N(N-1)}{2}$ independent tests; only step 3 scales with $N^2$, and it runs on the RT Cores.
+%    \item Called from \texttt{FreeFEM++} as \texttt{OptixBuildVisibilityPairs3D(Th3, ThS, V)}.
+%    \item The \texttt{.cu} is compiled separately to .ptx (\texttt{nvcc -ptx}) and loaded at runtime
+%  \end{itemize}
+%\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[fragile]{\textcolor{activecolor}{The raygen program}}
 \begin{center}
@@ -472,7 +698,7 @@
 extern "C" __global__ void __raygen__rg() {
   const unsigned long long k = optixGetLaunchIndex().x;
   if (k >= params.numPairs) return;
-  unsigned a, b;  unrank(k, params.N, a, b);       // k -> (i,j) global idx
+  unsigned a, b;  unrank(k, params.N, a, b);       // (*@\textcolor{red}{ k -> (i,j) global idx}@*) }
 
   float3 P = params.pts[a], Q = params.pts[b];
   float3 d = Q - P;  float L = sqrtf(dot3(d,d));   // segment length
@@ -483,19 +709,71 @@ extern "C" __global__ void __raygen__rg() {
              params.tmin, params.tmax, 0.0f,   // tmin, tmax, time
              OptixVisibilityMask(255),
              TERMINATE_ON_FIRST_HIT | DISABLE_CLOSESTHIT,
-             0, 1, 0, occluded);
+             0, 1, 0, occluded); // (*@\textcolor{green}{Hardware-accelerated ray traversal}@*)
   if (!occluded) atomicOr(&params.bits[k >> 5], 1u << (k & 31));
 }
 \end{lstlisting}
 \end{center}
  \begin{itemize}
-        \item \alert{Interval} $[t_{\min},t_{\max}]=[10^{-6}L,\ (1-10^{-5})L]$: the ray starts \alert{just after} $P$ and stops \alert{just before} $Q$.
+        %\item \alert{Interval} $[t_{\min},t_{\max}]=[10^{-6}L,\ (1-10^{-5})L]$: the ray starts \alert{just after} $P$ and stops \alert{just before} $Q$.
+        \item \textcolor{red}{Map the thread to a pair} 
+        \item  \textcolor{green}{Use NVIDIA RT Cores through OptiX}
+        \begin{itemize}
         \item \texttt{TERMINATE\_ON\_FIRST\_HIT}: a single obstacle is enough to conclude ``blocked''.
         \item \texttt{DISABLE\_CLOSESTHIT}: we do not compute the closest hit (useless here).
-        \item \alert{Payload} = 1 integer (\texttt{occluded}) shared between raygen and miss.
-        \item Mask 255: the ray sees all the geometry.
+        \end{itemize}
+        %\item \textbf{Payload} = 1 integer (\texttt{occluded}) shared between raygen and miss.
+        %\item Mask 255: the ray sees all the geometry.
   \end{itemize}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\begin{frame}[fragile]{\textcolor{activecolor}{The raygen program II -- Writing the bitset}}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \small
+      \begin{lstlisting}
+if (!occluded)
+  atomicOr(&params.bits[k >> 5],
+           1u << (k & 31));
+      \end{lstlisting}
+      \vspace{1mm}
+      \begin{itemize}
+        \item Ray $k$ $\to$ bit $k$: word \texttt{k>>5}, position \texttt{k\&31}.
+        \item $N=5$: all 10 rays share \texttt{bits[0]}.
+        \item Plain \verb+|=+ is read $\to$ modify $\to$ write\\
+              $\Rightarrow$ \alert{data race, lost bits}.
+        \item \texttt{atomicOr}: read-modify-write as one \alert{indivisible} operation.
+        \item Each thread sets \alert{only its own bit}, and OR is commutative\\
+              $\Rightarrow$ deterministic result.
+        \item Blocked ray: no call, the bit stays 0.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \small
+      \textbf{Without atomics}
+      \begin{center}
+      \begin{tabular}{ll}
+        T0: reads \texttt{0000} & T1: reads \texttt{0000}\\
+        T0: writes \texttt{0001} & T1: writes \texttt{0010}\\
+      \end{tabular}\\[1mm]
+      \alert{$\Rightarrow$ \texttt{0010}: bit 0 is lost}
+      \end{center}
+      \vspace{2mm}
+      \textbf{With \texttt{atomicOr}}
+      \begin{center}
+      \begin{tabular}{ll}
+        T0: \texttt{atomicOr(0001)} & $\to$ \texttt{0001}\\
+        T1: \texttt{atomicOr(0010)} & $\to$ \texttt{0011}\\
+      \end{tabular}\\[1mm]
+      \textcolor{green!50!black}{$\Rightarrow$ nothing is lost}
+      \end{center}
+      \vspace{2mm}
+      \textbf{Result on the example} (\texttt{bits[0]}, bits 9..0)
+      \begin{center}
+        \texttt{1110111011}
+      \end{center}
+      \centering bits 2 and 6 stay at \alert{0}.
+    \end{column}
+  \end{columns}
+\end{frame}
 \end{document}

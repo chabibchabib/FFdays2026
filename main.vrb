@@ -1,30 +1,48 @@
-\frametitle{\textcolor {activecolor}{The raygen program}}
-\begin{center}
-
-  \begin{lstlisting}
-extern "C" __global__ void __raygen__rg() {
-  const unsigned long long k = optixGetLaunchIndex().x;
-  if (k >= params.numPairs) return;
-  unsigned a, b;  unrank(k, params.N, a, b);       // k -> (i,j) global idx
-
-  float3 P = params.pts[a], Q = params.pts[b];
-  float3 d = Q - P;  float L = sqrtf(dot3(d,d));   // segment length
-  d /= L;                                          // unit direction
-
-  unsigned occluded = 1;                           // pessimistic
-  optixTrace(params.gas, P, d,
-             params.tmin, params.tmax, 0.0f,   // tmin, tmax, time
-             OptixVisibilityMask(255),
-             TERMINATE_ON_FIRST_HIT | DISABLE_CLOSESTHIT,
-             0, 1, 0, occluded);
-  if (!occluded) atomicOr(&params.bits[k >> 5], 1u << (k & 31));
-}
-\end{lstlisting}
-\end{center}
- \begin{itemize}
-        \item \alert{Interval} $[t_{\min},t_{\max}]=[10^{-6}L,\ (1-10^{-5})L]$: the ray starts \alert{just after} $P$ and stops \alert{just before} $Q$.
-        \item \texttt{TERMINATE\_ON\_FIRST\_HIT}: a single obstacle is enough to conclude ``blocked''.
-        \item \texttt{DISABLE\_CLOSESTHIT}: we do not compute the closest hit (useless here).
-        \item \alert{Payload} = 1 integer (\texttt{occluded}) shared between raygen and miss.
-        \item Mask 255: the ray sees all the geometry.
-  \end{itemize}
+\frametitle{\textcolor {activecolor}{The raygen program II -- Writing the bitset}}
+\begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \small
+      \begin{lstlisting}
+if (!occluded)
+  atomicOr(&params.bits[k >> 5],
+           1u << (k & 31));
+      \end{lstlisting}
+      \vspace{1mm}
+      \begin{itemize}
+        \item Ray $k$ $\to$ bit $k$: word \texttt{k>>5}, position \texttt{k\&31}.
+        \item $N=5$: all 10 rays share \texttt{bits[0]}.
+        \item Plain \verb+|=+ is read $\to$ modify $\to$ write\\
+              $\Rightarrow$ \alert{data race, lost bits}.
+        \item \texttt{atomicOr}: read-modify-write as one \alert{indivisible} operation.
+        \item Each thread sets \alert{only its own bit}, and OR is commutative\\
+              $\Rightarrow$ deterministic result.
+        \item Blocked ray: no call, the bit stays 0.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \small
+      \textbf{Without atomics}
+      \begin{center}
+      \begin{tabular}{ll}
+        T0: reads \texttt{0000} & T1: reads \texttt{0000}\\
+        T0: writes \texttt{0001} & T1: writes \texttt{0010}\\
+      \end{tabular}\\[1mm]
+      \alert{$\Rightarrow$ \texttt{0010}: bit 0 is lost}
+      \end{center}
+      \vspace{2mm}
+      \textbf{With \texttt{atomicOr}}
+      \begin{center}
+      \begin{tabular}{ll}
+        T0: \texttt{atomicOr(0001)} & $\to$ \texttt{0001}\\
+        T1: \texttt{atomicOr(0010)} & $\to$ \texttt{0011}\\
+      \end{tabular}\\[1mm]
+      \textcolor{green!50!black}{$\Rightarrow$ nothing is lost}
+      \end{center}
+      \vspace{2mm}
+      \textbf{Result on the example} (\texttt{bits[0]}, bits 9..0)
+      \begin{center}
+        \texttt{1110111011}
+      \end{center}
+      \centering bits 2 and 6 stay at \alert{0}.
+    \end{column}
+  \end{columns}

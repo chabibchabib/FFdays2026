@@ -1,0 +1,28 @@
+\frametitle{The raygen program (2/2): trace and write}
+\begin{lstlisting}
+  @unsigned occluded = 1;                           // pessimistic@
+  optixTrace(params.gas, P, d,
+             @params.tminRel*L, params.tmaxRel*L, 0.0f,@
+             OptixVisibilityMask(255),
+             @TERMINATE_ON_FIRST_HIT | DISABLE_CLOSESTHIT,@
+             0, 1, 0, occluded);
+  @if (!occluded) atomicOr(&params.bits[k >> 5], 1u << (k & 31));@
+\end{lstlisting}
+  \begin{columns}[T]
+    \begin{column}{0.56\textwidth}
+      \begin{itemize}
+        \item Interval $[10^{-6}L,\,(1-10^{-5})L]$: starts just after $P$, stops just before $Q$.
+        \item \alert{Pessimistic payload}: \texttt{occluded}=1; only the \texttt{miss} program sets it to 0. A hit runs nothing: fastest path.
+        \item \texttt{atomicOr}: 32 threads write the same 32-bit word.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \begin{tikzpicture}[scale=0.8]
+        \fill (0,0) circle (2pt) node[below left,font=\scriptsize] {$P$};
+        \fill (5,0) circle (2pt) node[below right,font=\scriptsize] {$Q$};
+        \draw[rtblue,thick] (0.4,0) -- (4.7,0);
+        \node[font=\scriptsize,rtblue,above] at (2.5,0.1) {$[t_{\min},t_{\max}]$};
+        \draw[rtgray,dashed] (0,0)--(0.4,0); \draw[rtgray,dashed] (4.7,0)--(5,0);
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
