@@ -694,7 +694,7 @@
 \begin{frame}[fragile]{\textcolor{activecolor}{The raygen program}}
 \begin{center}
   
-  \begin{lstlisting}
+  \begin{lstlisting}[basicstyle=\fontsize{8}{9}\selectfont\ttfamily]
 extern "C" __global__ void __raygen__rg() {
   const unsigned long long k = optixGetLaunchIndex().x;
   if (k >= params.numPairs) return;
@@ -731,7 +731,7 @@ extern "C" __global__ void __raygen__rg() {
   \begin{columns}[T]
     \begin{column}{0.52\textwidth}
       \small
-      \begin{lstlisting}
+      \begin{lstlisting}[basicstyle=\normalsize\ttfamily]
 if (!occluded)
   atomicOr(&params.bits[k >> 5],
            1u << (k & 31));
@@ -775,5 +775,119 @@ if (!occluded)
       \centering bits 2 and 6 stay at \alert{0}.
     \end{column}
   \end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetikzlibrary{fit,backgrounds}
+\section{Interfacing FreeFEM++ $\leftrightarrow$ CUDA/OptiX}
+\begin{frame}{\textcolor{activecolor}{Data flow}}
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[node distance=0.6cm,font=\normalsize]
+  \node[box=rtblue,text width=2.3cm] (a) {\texttt{FreeFEM++} \texttt{Th} (\texttt{pmesh3}), \texttt{rbcLabels}};
+  \node[box=rtblue,text width=2.3cm,right=of a] (b) {Host arrays: origins $O_i$, normals, \texttt{obst}};
+  \node[box=rtgreen,text width=2.3cm,right=of b] (c) {Device: vertices $\to$ GAS};
+  \node[box=rtorange,text width=2.3cm,right=of c] (d) {\texttt{optixLaunch} by chunks};
+  \node[box=rtorange,text width=2.3cm,right=of d] (r) {\texttt{raygen}: \texttt{optixTrace} per ray $\to$ bitset};
+  \node[box=rtblue,text width=2.3cm,right=of r] (e) {Host: unpack $\to$ \texttt{V} (\texttt{FreeFEM++} array)};
+
+  \draw[arr] (a)--(b);
+  \draw[arr] (b) -- node[above,font=\normalsize]{H2D} (c);
+  \draw[arr] (c)--(d);
+  \draw[arr] (d)--(r);
+  \draw[arr] (r) -- node[above,font=\normalsize]{D2H} (e);
+
+  \begin{scope}[on background layer]
+    \node[draw=black!60, dashed, rounded corners=3pt, inner sep=8pt,
+          fit=(c)(d)(r),
+          label={[font=\small\bfseries,text=black!70]above:GPU}] {};
+  \end{scope}
+\end{tikzpicture}}
+\end{center}
+
+\vspace{0.5em}
+\begin{itemize}\setlength\itemsep{0.6em}
+  \item \textbf{GPU data structures}: BVH (GAS) built from mesh vertices; ray origins and directions from mesh data (vertices, labels)
+  \item \textbf{Parallel ray casting}: \texttt{raygen} calls \texttt{optixTrace}, one GPU thread per ray
+  \item \textbf{Chunked launches}: bounded memory, any number of rays
+  \item \textbf{Compact output}: one bit per ray, unpacked on the host into $V$
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{frame}{\textcolor{activecolor}{Plugging into \texttt{FreeFEM++}}}
+%  \begin{columns}[T]
+%    \begin{column}{0.52\textwidth}
+%      \begin{center}
+%      \begin{itemize}
+%        \item Exposed with \texttt{LOADFUNC}; called from the \texttt{.edp} script:\\
+%        \texttt{OptixBuildVisibilityPairs3D(Th, ThS, V)}
+%        \item \texttt{params.h}: the \texttt{Params} struct, shared by host (\texttt{.cpp}) and device (\texttt{.cu}).
+%        \item Device code compiled separately: \texttt{nvcc -ptx} $\to$ \texttt{.ptx}, loaded at runtime into the OptiX module/pipeline, with the SBT (program table).
+%      \end{itemize}
+%          \end{center}
+%    \end{column}
+%    \begin{column}{0.48\textwidth}
+%      \begin{center}
+%      \begin{tikzpicture}[node distance=0.6cm,font=\scriptsize]
+%        \node[box=rtblue,minimum width=3.4cm] (edp) {\texttt{script.edp}};
+%        \node[box=rtgreen,minimum width=3.4cm,below=of edp] (so) {\texttt{FreeFEM} plugin (\texttt{.so}) \\ host code, \texttt{params.h}};
+%        \node[box=rtorange,minimum width=3.4cm,below=of so] (ptx) {\texttt{.ptx} (raygen, miss)};
+%        \node[box=rtgray,minimum width=3.4cm,below=of ptx] (gpu) {OptiX runtime + GPU};
+%        \draw[arr] (edp)--node[right]{\texttt{LOADFUNC}}(so);
+%        \draw[arr] (so)--node[right]{loads}(ptx);
+%        \draw[arr] (ptx)--(gpu);
+%      \end{tikzpicture}
+%      \end{center}
+%
+%    \end{column}
+%  \end{columns}
+%\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]{\textcolor{activecolor}{Build chain}}
+  \begin{center}
+  \begin{tikzpicture}[node distance=1.3cm,font=\normalsize]
+    \node[box=rtorange,text width=2.6cm] (cu) {\texttt{.cu}\\(raygen, miss)};
+    \node[box=rtorange,text width=2.6cm,right=of cu] (ptx) {\texttt{.ptx}};
+    \node[box=rtblue,text width=2.6cm,below=0.9cm of cu] (cpp) {\texttt{.cpp}\\(host + \texttt{FreeFEM} glue)};
+    \node[box=rtblue,text width=2.6cm,right=of cpp] (so) {plugin \texttt{.so}};
+    %\node[box=rtgreen,text width=2.6cm,right=2cm of ptx] (run) {run: \texttt{FreeFem++ script.edp}};
+    \node[box=rtgreen,text width=2.6cm] (run) at ([xshift=4cm,yshift=-0.85cm]ptx) {run: \texttt{FreeFem++ script.edp}};
+    \draw[arr] (cu)--node[above, yshift = 0.4cm]{\texttt{nvcc -ptx}}(ptx);
+    \draw[arr] (cpp)--node[above,yshift =-1cm]{\texttt{FF} + OptiX headers}(so);
+    \draw[arr] (ptx)--(run); \draw[arr] (so)--(run);
+  \end{tikzpicture}
+  \end{center}
+  \begin{itemize}\setlength\itemsep{0.4em}
+    \item Requirements: OptiX SDK headers, CUDA toolkit, \texttt{FreeFEM++} plugin toolchain.
+  \begin{lstlisting}[language=C++,basicstyle=\fontsize{6}{5}\selectfont\ttfamily]
+    #include <cuda_runtime.h>
+    #include <optix.h>
+    #include <optix_stubs.h>
+    #include <optix_function_table_definition.h>   
+  \end{lstlisting}
+    \item The \texttt{.ptx} must exist in the working directory, with the name of the compiled \texttt{.cu}.
+    \begin{lstlisting}[language=C++,basicstyle=\fontsize{7}{6}\selectfont\ttfamily]
+    nvcc -ptx  -I"PATH/OPTIX/include" xxxxxx.cu -o xxxxxx.ptx
+    \end{lstlisting}
+
+  \item Once the \texttt{.ptx} file is generated, the \texttt{.cpp} one is compiled using the following command:
+    \begin{lstlisting}[language=C++,basicstyle=\fontsize{7}{6}\selectfont\ttfamily]
+  
+  ff-c++ -I"\$PATH/OPTIX/include" -I/PATH/cuda/include     -L/PATH/cuda/lib64 -lcudart -lcuda -ldl xxx.cpp
+    \end{lstlisting}
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Application to Chamonix valley}
+\begin{frame}
+\begin{center}
+\begin{figure}[H]
+\begin{center}
+\hspace*{-0.485cm}\includegraphics[width=12.4cm]{figures/cutCham2.png}
+\caption*{Ground and vertical temperatures (in $^o$C) due to Earth's infrared radiation (i.e. at night) computed in the valley of Chamonix, with reflective conditions on the sides. Domain size is $35$ $\times$ $35$ $\times$ $10$ km. Snow above 2500m implies 70\% less radiation. A cloud increases the scattering and $\kappa_\nu$ above 5000m. Notice the parabolic effect in the valley. $\sim$400K vertices}
+\end{center}
+\end{figure}
+\end{center}
+
 \end{frame}
 \end{document}

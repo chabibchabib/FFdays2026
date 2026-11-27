@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.3.9)  26 NOV 2026 17:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.3.9)  27 NOV 2026 17:05
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1528,22 +1528,22 @@ LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <5> not available
 (Font)              Font shape `T1/phv/b/it' tried instead on input line 82.
 LaTeX Font Info:    Font shape `T1/phv/b/it' in size <5> not available
 (Font)              Font shape `T1/phv/b/sl' tried instead on input line 82.
-<figures/logos/ljll.png, id=29, 312.2064pt x 305.7021pt>
+<figures/logos/ljll.png, id=37, 312.2064pt x 305.7021pt>
 File: figures/logos/ljll.png Graphic file (type png)
 <use figures/logos/ljll.png>
 Package pdftex.def Info: figures/logos/ljll.png  used on input line 82.
 (pdftex.def)             Requested size: 46.49069pt x 45.5244pt.
-<figures/logos/LOGO_CNRS_BLEU.png, id=31, 878.28125pt x 866.23625pt>
+<figures/logos/LOGO_CNRS_BLEU.png, id=39, 878.28125pt x 866.23625pt>
 File: figures/logos/LOGO_CNRS_BLEU.png Graphic file (type png)
 <use figures/logos/LOGO_CNRS_BLEU.png>
 Package pdftex.def Info: figures/logos/LOGO_CNRS_BLEU.png  used on input line 82.
 (pdftex.def)             Requested size: 46.15468pt x 45.5244pt.
-<figures/logos/LOGO_SorbonneU_0.jpg, id=32, 602.25pt x 242.40562pt>
+<figures/logos/LOGO_SorbonneU_0.jpg, id=40, 602.25pt x 242.40562pt>
 File: figures/logos/LOGO_SorbonneU_0.jpg Graphic file (type jpg)
 <use figures/logos/LOGO_SorbonneU_0.jpg>
 Package pdftex.def Info: figures/logos/LOGO_SorbonneU_0.jpg  used on input line 82.
 (pdftex.def)             Requested size: 106.0294pt x 42.67912pt.
-<figures/logos/inr_logo_noir.png, id=33, 310.761pt x 109.3686pt>
+<figures/logos/inr_logo_noir.png, id=41, 310.761pt x 109.3686pt>
 File: figures/logos/inr_logo_noir.png Graphic file (type png)
 <use figures/logos/inr_logo_noir.png>
 Package pdftex.def Info: figures/logos/inr_logo_noir.png  used on input line 82.
@@ -1578,22 +1578,22 @@ Non-PDF special ignored!
 <special> ps:tx@Dict begin  gsave STV CP T /ps@refangle 0.  def grestore  e...
 Non-PDF special ignored!
 <special> ps:tx@Dict begin  gsave STV CP T /ps@rot 0 def grestore  end
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc} <./figures/logos/ljll.png> <./figures/logos/LOGO_CNRS_BLEU.png> <./figures/logos/LOGO_SorbonneU_0.jpg> <./figures/logos/inr_logo_noir.png>]) (./main.toc) [2
-
-]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc} <./figures/logos/ljll.png> <./figures/logos/LOGO_CNRS_BLEU.png> <./figures/logos/LOGO_SorbonneU_0.jpg> <./figures/logos/inr_logo_noir.png>]) (./main.toc
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <8> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 140.
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 5.
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <6> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 140.
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 5.
 LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <8> not available
-(Font)              Font shape `T1/phv/b/it' tried instead on input line 140.
+(Font)              Font shape `T1/phv/b/it' tried instead on input line 5.
 LaTeX Font Info:    Font shape `T1/phv/b/it' in size <8> not available
-(Font)              Font shape `T1/phv/b/sl' tried instead on input line 140.
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 5.
 LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <6> not available
-(Font)              Font shape `T1/phv/b/it' tried instead on input line 140.
+(Font)              Font shape `T1/phv/b/it' tried instead on input line 5.
 LaTeX Font Info:    Font shape `T1/phv/b/it' in size <6> not available
-(Font)              Font shape `T1/phv/b/sl' tried instead on input line 140.
- [3
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 5.
+) [2
+
+] [3
 
 ] [4
 
@@ -1650,9 +1650,13 @@ LaTeX Font Info:    Font shape `T1/phv/b/it' in size <10.95> not available
 \openout4 = `main.vrb'.
 
  (./main.vrb
-LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <5> not available
+LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <8> not available
 (Font)              Font shape `T1/cmtt/m/n' tried instead on input line 5.
-) [19
+)
+Overfull \vbox (5.51927pt too high) detected at line 728
+ []
+
+[19
 
 ]
 \openout4 = `main.vrb'.
@@ -1662,7 +1666,47 @@ LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <7> not available
 (Font)              Font shape `T1/cmtt/m/n' tried instead on input line 33.
 ) [20
 
+] (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarybackgrounds.code.tex
+File: tikzlibrarybackgrounds.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@layerbox@background=\box137
+\pgf@layerboxsaved@background=\box138
+)
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 781.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\leftrightarrow' on input line 781.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 781.
+
+(./main.toc) [21
+
+] [22
+
 ]
+\openout4 = `main.vrb'.
+
+ (./main.vrb)
+Overfull \vbox (22.02817pt too high) detected at line 879
+ []
+
+[23
+
+] (./main.toc) [24
+
+]
+<figures/cutCham2.png, id=233, 3015.265pt x 1397.22pt>
+File: figures/cutCham2.png Graphic file (type png)
+<use figures/cutCham2.png>
+Package pdftex.def Info: figures/cutCham2.png  used on input line 892.
+(pdftex.def)             Requested size: 352.814pt x 163.48047pt.
+ [25
+
+ <./figures/cutCham2.png (PNG copy)>]
 \tf@nav=\write8
 \openout8 = `main.nav'.
 
@@ -1672,32 +1716,27 @@ LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <7> not available
 \tf@snm=\write10
 \openout10 = `main.snm'.
 
-
-
-Package caption Warning: Unused \captionsetup[figure] on input line 563.
-See the caption package documentation for explanation.
-
-(./main.aux)
+ (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 12B7B1933BC7E283A6C7072C1BCE79E9;562.
+(rerunfilecheck)             Checksum: E580BBFA86E73BA489C8FD104F8EC1E3;981.
  ) 
 Here is how much of TeX's memory you used:
- 57402 strings out of 474222
- 1314074 string characters out of 5748734
+ 57679 strings out of 474222
+ 1319238 string characters out of 5748734
  2228330 words of memory out of 5000000
- 78549 multiletter control sequences out of 15000+600000
+ 78805 multiletter control sequences out of 15000+600000
  644498 words of font info for 139 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 128i,20n,123p,789b,1591s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,20n,123p,789b,1650s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfit0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on main.pdf (20 pages, 572241 bytes).
+Output written on main.pdf (25 pages, 7560976 bytes).
 PDF statistics:
- 312 PDF objects out of 1000 (max. 8388607)
- 220 compressed objects within 3 object streams
- 45 named destinations out of 1000 (max. 500000)
- 95 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 369 PDF objects out of 1000 (max. 8388607)
+ 271 compressed objects within 3 object streams
+ 57 named destinations out of 1000 (max. 500000)
+ 116 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -2,3 +2,5 @@
 \beamer@sectionintoc {2}{Numerical scheme}{6}{0}{2}
 \beamer@sectionintoc {3}{Ray tracing}{11}{0}{3}
 \beamer@sectionintoc {4}{Implementation}{17}{0}{4}
+\beamer@sectionintoc {5}{Interfacing FreeFEM++ $\leftrightarrow $ CUDA/OptiX}{21}{0}{5}
+\beamer@sectionintoc {6}{Application to Chamonix valley}{24}{0}{6}
